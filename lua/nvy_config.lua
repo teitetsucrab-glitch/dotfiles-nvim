@@ -1,3 +1,4 @@
+-- 2025/12/02 15:56 first stable-check ended
 vim.opt.guifont = "UDEV Gothic NF:h10"
 vim.cmd('colorscheme tokyonight')
 -- nvy_config.lua の記述例

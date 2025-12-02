@@ -1,3 +1,4 @@
+-- 2025/12/02 15:56 first stable-check ended
 -- lua/colors/chalkboard-classic.lua
 --【Classic Class】 伝統的な深緑と生成りチョーク
 -- **特徴:** 昔ながらの教室の黒板。温かみがあり、少し黄色がかった「生成り（きなり）」色のチョークをベースにします。最も目に優しい構成です。

@@ -1,3 +1,4 @@
+-- 2025/12/02 15:56 first stable-check ended
 -- lua/colors/chalkboard.lua
 
 -- 1. テーマの初期化 (お作法)

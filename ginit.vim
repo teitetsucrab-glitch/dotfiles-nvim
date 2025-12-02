@@ -1,3 +1,4 @@
+" 2025/12/02 15:56 first stable-check ended
 " Enable Mouse
 set mouse=a
 

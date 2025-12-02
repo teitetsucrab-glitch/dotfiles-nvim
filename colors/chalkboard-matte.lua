@@ -1,3 +1,4 @@
+-- 2025/12/02 15:56 first stable-check ended
 -- lua/colors/chalkboard-matte.lua
 --【Dusty Matte】 使い込まれた黒板
 -- **特徴:** チョークの粉が全体に少し残ったような、コントラストを極限まで下げたマットな質感。「まぶしさ」を極力排除したい場合に最適です。

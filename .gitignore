@@ -1,0 +1,17 @@
+# echoコマンドで.gitignoreファイルを作成します
+@"
+# --- 無視するファイル ---
+*.swp
+*.swo
+.netrwhist
+undo/
+backup/
+swap/
+sessions/
+pack/
+plugin/
+autoload/
+.DS_Store
+Thumbs.db
+"@ | Out-File -Encoding UTF8 .gitignore
+

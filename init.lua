@@ -3,10 +3,6 @@
 -- ==========================================================================
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
--- ==== nvim-tree の初期設定
--- disable netrw at the very start of your init.lua
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
@@ -55,12 +51,7 @@ add({ source = "rose-pine/neovim", name = "rose-pine" })	-- エモいカラー�
 -- 3. カラースキーム切り替えツール
 add("zaldih/themery.nvim")
 
--- ファイラーやらステータスバーの拡張をするプラグイン
-add({
-	source = 'nvim-tree/nvim-tree.lua',
-	-- Supply dependencies near target plugin
-	depends = { 'nvim-tree/nvim-web-devicons' },
-})
+-- ステータスバーの拡張をするプラグイン
 add({
 	source = 'nvim-lualine/lualine.nvim',
 	-- Supply dependencies near target plugin
@@ -71,7 +62,6 @@ add({
 -- 日本語ヘルプ
 add("https://github.com/vim-jp/vimdoc-ja")
 
-add('nvim-mini/mini.pick')
 -- ==========================================================================
 -- part 4. プラグインの設定(と基本設定)
 -- ==========================================================================
@@ -92,7 +82,6 @@ now(function()
 
 	-- nvim-tree と lualine も最初に読み込んどこう
 	require('lualine').setup()
-	-- require('nvim-tree').setup()
 	-- mini.files の設定
 	require('mini.files').setup({
 		windows = {
@@ -108,24 +97,11 @@ now(function()
 		end,
 		{ desc  = "エクスプローラを開く" }
 	)
-	-- mini.pick の設定
-	-- require('mini.pick').setup({})
-	-- vim.ui.select = MiniPick.ui_select
 end)
 
 -- globalにアンダーラインを消し飛ばすコマンドを定義
 -- 多少負荷がかかるかもしれないが、致し方ない
 -- もしかしたら、これが他プラグインの同名関数と干渉するかもしれないので注意
--- ==== 旧式 ====
--- function kill_underline()
--- 	local cursorline = vim.api.nvim_get_hl(0, { name = "CursorLine" })
--- 	vim.api.nvim_set_hl(0, "Underlined", { bg = cursorline.bg, bold = true })
--- 	vim.api.nvim_set_hl(0, "MiniCursorword", { bg = cursorline.bg, bold = true })
--- 	vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { bold = true })
--- 	-- 他にも邪魔な下線があれば、逐一ハイライトグループを追加
--- end
-
--- ==== 新型 ====
 -- グローバル関数: 下線抹殺 & Nvy最適化
 function kill_underline()
 	-- 1. 安全に CursorLine の背景色を取得
@@ -177,6 +153,8 @@ end
 later(function()
 	-- global定義にしたのは、カラースキームの変化ごとに対応するため
 	-- カラースキームはThemeryのみで変えるので、create_autocmdは不要と判断(重い処理を入れたくない!)
+	-- 自作カラースキームだと、何故かMiniCursorwordからあらかじめunderlineを剥奪しないと上手く行かないので、
+	-- 消してからにしてね
 	local colorthemes = {
 		-- 長くなりそうなので、変数であらかじめ定義
 		{
@@ -302,6 +280,5 @@ loadModule('keymaps')
 -- Nvyが起動している場合のみ実行されるブロック
 if vim.g.nvy then
 	loadModule('nvy_config')
-	-- vim.opt.guifont = "UDEV Gothic NF:h10"
 end
 

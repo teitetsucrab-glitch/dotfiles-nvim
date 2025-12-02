@@ -3,10 +3,7 @@
 -- ==========================================================================
 -- 注意: これは必ずプラグインの読み込みよりも前に設定する必要があります
 
--- !!! init.luaで確定でvim.g.mapleaderとvim.g.maplocalleaderを読み込むようにしたので、こちらはコメントアウト
--- vim.g.mapleader = ' '
--- vim.g.maplocalleader = ' '
-
+-- !!! init.luaで確定でvim.g.mapleaderとvim.g.maplocalleaderを読み込むようにすること
 -- キーマッピングを短く書くためのショートカット
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
@@ -80,8 +77,6 @@ map('n', 'X', '0"_D', opts)
 map('n', '<leader>w', ':w<CR>', opts)
 -- <Leader>q でファイルを閉じる
 map('n', '<leader>q', ':q<CR>', opts)
--- <Leader>e で新しくタブを作ってエクスプローラを表示
--- map('n', '<leader>e', ':tabnew .<CR>', opts)
 -- ターミナルから抜けやすくなるといいな
 map('t', '<C-]>', '<C-\\><C-n>', opts)
 -- ==========================================================================
@@ -91,15 +86,9 @@ map('t', '<C-]>', '<C-\\><C-n>', opts)
 -- keymaps.lua に追加
 -- <Leader>t でテーマ切り替えメニューを開く
 map('n', '<leader>t', ':Themery<CR>', opts)
--- <Leader>f でファイラーをトグル
--- map('n', '<leader>f', ':NvimTreeToggle<CR>', opts)
 
 -- キーマッピング（使いやすくするためのショートカット）
 -- <Leader> はデフォルトでは "\" (バックスラッシュ) かスペースキーです
 map('n', '<Leader>e', '<cmd>Files<CR>', { desc = 'ファイルを開く' })
--- map(
--- 	'n', '<Leader>f', function()
--- 		MiniPick.builtin.files({ tool = 'git'})
--- 	end, { desc = 'ファイルを検索' }
--- )
+
 

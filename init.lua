@@ -265,6 +265,10 @@ later(function()
 	require('mini.align').setup()
 end)
 
+-- mini.pick(ファジー検索系のプラグイン)
+later(function()
+	require('mini.pick').setup()
+end)
 -- ==== vimdoc-ja
 later(function()
 	-- 基本は日本語ヘルプを優先

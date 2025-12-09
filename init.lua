@@ -83,7 +83,7 @@ add("https://github.com/vim-jp/vimdoc-ja")
 now(function()
 	-- nord font 依存のアイコン
 	require('mini.icons').setup()
-	vim.cmd('colorscheme chalkboard')
+	vim.cmd('colorscheme rose-pine-main')
 
 	-- mini.nvim の機能セットアップ
 	require('mini.starter').setup()

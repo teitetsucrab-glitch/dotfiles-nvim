@@ -19,7 +19,7 @@ map('i', 'jk', '<Esc>', opts)
 
 -- 検索ハイライトを消す (ノーマルモード時)
 -- Escを2回押すと、検索後の黄色いハイライトが消えます
-map('n', '<Esc><Esc>', ':nohlsearch<CR>', opts)
+map('n', '<Esc><Esc>', '<cmd>nohlsearch<CR>', opts)
 
 -- Spaceキー単体では何もしない (Leaderとしての待機に専念させる)
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -75,21 +75,36 @@ map('n', 'X', '0"_D', opts)
 -- ==========================================================================
 
 -- <Leader>w でファイルを保存
-map('n', '<leader>w', ':w<CR>', opts)
+map('n', '<leader>w', '<cmd>w<CR>', opts)
 -- <Leader>q でファイルを閉じる
-map('n', '<leader>q', ':q<CR>', opts)
+map('n', '<leader>q', '<cmd>q<CR>', opts)
+-- <Leader>n で新しいタブを生成
+map('n', '<leader>n', '<cmd>tabnew<CR>', opts)
 -- ターミナルから抜けやすくなるといいな
 map('t', '<C-]>', '<C-\\><C-n>', opts)
 -- ==========================================================================
 -- 6. プラグイン依存のショートカット
 -- ==========================================================================
-
 -- keymaps.lua に追加
+-- ==== Themery ====
 -- <Leader>t でテーマ切り替えメニューを開く
-map('n', '<leader>t', ':Themery<CR>', opts)
+map('n', '<leader>t', '<cmd>Themery<CR>', opts)
 
+-- ==== mini.files ====
 -- キーマッピング（使いやすくするためのショートカット）
 -- <Leader> はデフォルトでは "\" (バックスラッシュ) かスペースキーです
 map('n', '<Leader>e', '<cmd>Files<CR>', { desc = 'ファイルを開く' })
 
 
+-- ==== mini.pick ====
+-- 各検索を呼び出すやつ
+-- よく使う機能へのショートカット
+vim.keymap.set('n', '<Leader>f', function()
+	require('mini.pick').builtin.files()
+end, { desc = 'Find Files' })
+vim.keymap.set('n', '<Leader>g', function()
+	require('mini.pick').builtin.grep_live()
+end, { desc = 'Grep Live' })
+vim.keymap.set('n', '<Leader>b', function()
+	require('mini.pick').builtin.buffers()
+end, { desc = 'Find Buffers' })

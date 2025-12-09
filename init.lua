@@ -11,18 +11,26 @@ vim.opt.termguicolors = true
 -- ==========================================================================
 -- part 1. mini.deps のインストール (ブートストラップ)
 -- ==========================================================================
+-- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
 local path_package = vim.fn.stdpath('data') .. '/site/'
-local mini_path = path_package .. 'pack/deps/start/mini.deps'
-if not vim.loop.fs_stat(mini_path) then
-	vim.cmd('echo "Installing `mini.deps`..."')
-	vim.fn.system({ 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.deps', mini_path })
-	vim.cmd('packadd mini.deps | helptags ALL')
-	vim.cmd('echo "Installed `mini.deps`"')
+local mini_path = path_package .. 'pack/deps/start/mini.nvim'
+if not vim.uv.fs_stat(mini_path) then
+	vim.cmd('echo "Installing `mini.nvim`" | redraw')
+	local clone_cmd = {
+		'git', 'clone', '--filter=blob:none',
+		'https://github.com/echasnovski/mini.nvim', mini_path
+	}
+	vim.fn.system(clone_cmd)
+	vim.cmd('packadd mini.nvim | helptags ALL')
+	vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
 -- ==========================================================================
 -- part 2. mini.deps のセットアップ
 -- ==========================================================================
+-- Set up 'mini.deps' (customize to your liking)
+-- require('mini.deps').setup({ path = { package = path_package } })
+
 local MiniDeps = require('mini.deps')
 MiniDeps.setup({ path = { package = path_package } })
 
@@ -257,6 +265,10 @@ later(function()
 	require('mini.align').setup()
 end)
 
+-- mini.pick(ファジー検索系のプラグイン)
+later(function()
+	require('mini.pick').setup()
+end)
 -- ==== vimdoc-ja
 later(function()
 	-- 基本は日本語ヘルプを優先

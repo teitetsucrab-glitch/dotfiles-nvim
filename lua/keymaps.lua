@@ -85,11 +85,25 @@ map('t', '<C-]>', '<C-\\><C-n>', opts)
 -- ==========================================================================
 
 -- keymaps.lua に追加
+-- ==== Themery ====
 -- <Leader>t でテーマ切り替えメニューを開く
 map('n', '<leader>t', ':Themery<CR>', opts)
 
+-- ==== mini.files ====
 -- キーマッピング（使いやすくするためのショートカット）
 -- <Leader> はデフォルトでは "\" (バックスラッシュ) かスペースキーです
 map('n', '<Leader>e', '<cmd>Files<CR>', { desc = 'ファイルを開く' })
 
 
+-- ==== mini.pick ====
+-- 各検索を呼び出すやつ
+-- よく使う機能へのショートカット
+vim.keymap.set('n', '<Leader>f', function()
+	require('mini.pick').builtin.files()
+end, { desc = 'Find Files' })
+vim.keymap.set('n', '<Leader>g', function()
+	require('mini.pick').builtin.grep_live()
+end, { desc = 'Grep Live' })
+vim.keymap.set('n', '<Leader>b', function()
+	require('mini.pick').builtin.buffers()
+end, { desc = 'Find Buffers' })

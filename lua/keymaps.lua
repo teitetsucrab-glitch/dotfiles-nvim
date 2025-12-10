@@ -84,17 +84,19 @@ map('n', '<leader>n', '<cmd>tabnew<CR>', opts)
 map('t', '<C-]>', '<C-\\><C-n>', opts)
 
 
--- 後で色々いじる
+-- まとめてセーブをもっと自身持ってやりたい
+-- 確認ダイアログがあったほうが嬉しいでしょ?
 map('n', '<leader>zw', function()
 	confirm = vim.fn.confirm("save all file?", "&Yes\n&No", 0)
 	if confirm == 1 then
+		-- バッファ上のすべてのファイルを保存
 		vim.cmd('wall')
 	elseif confirm == 2 then
 		vim.notify("not saved", vim.log.levels.INFO)
 	else
 		vim.notify("command canceled", vim.log.levels.INFO)
 	end
-end, { desc = "test function"})
+end, { desc = "save all files with confirmation"})
 
 
 -- ==========================================================================

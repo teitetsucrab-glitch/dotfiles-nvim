@@ -82,6 +82,20 @@ map('n', '<leader>q', '<cmd>q<CR>', opts)
 map('n', '<leader>n', '<cmd>tabnew<CR>', opts)
 -- ターミナルから抜けやすくなるといいな
 map('t', '<C-]>', '<C-\\><C-n>', opts)
+
+
+map('n', '<leader>zw', function()
+	confirm = vim.fn.confirm("save all file?", "&Yes\n&No", 0)
+	if confirm == 1 then
+		vim.notify("all file saved", vim.log.levels.INFO)
+	elseif confirm == 2 then
+		vim.notify("not saved", vim.log.levels.INFO)
+	else
+		vim.notify("command canceled", vim.log.levels.INFO)
+	end
+end, { desc = "test function"})
+
+
 -- ==========================================================================
 -- 6. プラグイン依存のショートカット
 -- ==========================================================================

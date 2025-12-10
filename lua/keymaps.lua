@@ -82,11 +82,19 @@ map('n', '<leader>x', '<cmd>x<CR>', opts)
 map('n', '<leader>q', '<cmd>q<CR>', opts)
 -- <Leader>n で新しいタブを生成
 map('n', '<leader>n', '<cmd>tabnew<CR>', opts)
+-- <Leader>l でreadonlyオン
+map('n', '<leader>l', '<cmd>set readonly<CR>', opts)
+-- <Leader>ul でreadonlyオフ
+map('n', '<leader>ul', '<cmd>set noreadonly<CR>', opts)
+-- <Leader>zl でmodifiableオン
+map('n', '<leader>zl', '<cmd>set modifiable<CR>', opts)
+-- <Leader>zul でmodifiableオフ
+map('n', '<leader>zul', '<cmd>set nomodifiable<CR>', opts)
 -- ターミナルから抜けやすくなるといいな
 map('t', '<C-]>', '<C-\\><C-n>', opts)
 
 
--- まとめてセーブをもっと自身持ってやりたい
+-- まとめてセーブとかをもっと自信持ってやりたい
 -- 確認ダイアログがあったほうが嬉しいでしょ?
 local function confirm_and_execute(prompt, command_to_execute, execute_description, notification_level)
     -- notification_level が指定されていなければ INFO をデフォルトとする
@@ -107,6 +115,10 @@ end
 map('n', '<leader>zw', function()
 	confirm_and_execute("save all file?", 'wall', "save all files")
 end, { desc = "save all files with confirmation"})
+
+map('n', '<leader>d', function()
+	confirm_and_execute("close this file?", 'quit!', "forced close file")
+end, { desc = "close current file with confirmation"})
 
 map('n', '<leader>zq', function()
 	confirm_and_execute("close all file?", 'qall', "close all files")

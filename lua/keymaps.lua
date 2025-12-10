@@ -88,40 +88,32 @@ map('t', '<C-]>', '<C-\\><C-n>', opts)
 
 -- まとめてセーブをもっと自身持ってやりたい
 -- 確認ダイアログがあったほうが嬉しいでしょ?
+local function confirm_and_execute(prompt, command_to_execute, execute_description, notification_level)
+    -- notification_level が指定されていなければ INFO をデフォルトとする
+    local level = notification_level or vim.log.levels.INFO
+    local denied_execution = execute_description or ( "[" .. command_to_execute .. "]" )
+
+    local confirm = vim.fn.confirm(prompt, "&Yes\n&No", 0)
+
+    if confirm == 1 then
+        vim.cmd(command_to_execute)
+    elseif confirm == 2 then
+        vim.notify(denied_execution .. " not executed", level)
+    else
+        vim.notify("command canceled", level)
+    end
+end
+
 map('n', '<leader>zw', function()
-	local confirm = vim.fn.confirm("save all file?", "&Yes\n&No", 0)
-	if confirm == 1 then
-		-- バッファ上のすべてのファイルを保存
-		vim.cmd('wall')
-	elseif confirm == 2 then
-		vim.notify("not saved", vim.log.levels.INFO)
-	else
-		vim.notify("command canceled", vim.log.levels.INFO)
-	end
+	confirm_and_execute("save all file?", 'wall', "save-all-files")
 end, { desc = "save all files with confirmation"})
 
 map('n', '<leader>zq', function()
-	local confirm = vim.fn.confirm("close all file?", "&Yes\n&No", 0)
-	if confirm == 1 then
-		-- バッファ上のすべてのファイルを閉じる
-		vim.cmd('qall')
-	elseif confirm == 2 then
-		vim.notify("not closed", vim.log.levels.INFO)
-	else
-		vim.notify("command canceled", vim.log.levels.INFO)
-	end
+	confirm_and_execute("close all file?", 'qall', "close-all-files")
 end, { desc = "close all files with confirmation"})
 
 map('n', '<leader>zx', function()
-	local confirm = vim.fn.confirm("save and close all file?", "&Yes\n&No", 0)
-	if confirm == 1 then
-		-- バッファ上のすべてのファイルを保存して閉じる
-		vim.cmd('xall')
-	elseif confirm == 2 then
-		vim.notify("not saved and closed", vim.log.levels.INFO)
-	else
-		vim.notify("command canceled", vim.log.levels.INFO)
-	end
+	confirm_and_execute("save and close all file?", 'xall', "save-and-close-all-files")
 end, { desc = "save and close all files with confirmation"})
 
 map('n', '<leader>zzz', function()

@@ -76,12 +76,78 @@ map('n', 'X', '0"_D', opts)
 
 -- <Leader>w でファイルを保存
 map('n', '<leader>w', '<cmd>w<CR>', opts)
+-- <Leader>x でファイルを保存して閉じる
+map('n', '<leader>x', '<cmd>x<CR>', opts)
 -- <Leader>q でファイルを閉じる
 map('n', '<leader>q', '<cmd>q<CR>', opts)
 -- <Leader>n で新しいタブを生成
 map('n', '<leader>n', '<cmd>tabnew<CR>', opts)
+-- <Leader>l でreadonlyオン
+map('n', '<leader>l', '<cmd>set readonly<CR>', opts)
+-- <Leader>ul でreadonlyオフ
+map('n', '<leader>ul', '<cmd>set noreadonly<CR>', opts)
+-- <Leader>zl でmodifiableオン
+map('n', '<leader>zl', '<cmd>set modifiable<CR>', opts)
+-- <Leader>zul でmodifiableオフ
+map('n', '<leader>zul', '<cmd>set nomodifiable<CR>', opts)
 -- ターミナルから抜けやすくなるといいな
 map('t', '<C-]>', '<C-\\><C-n>', opts)
+
+
+-- まとめてセーブとかをもっと自信持ってやりたい
+-- 確認ダイアログがあったほうが嬉しいでしょ?
+local function confirm_and_execute(prompt, command_to_execute, execute_description, notification_level)
+    -- notification_level が指定されていなければ INFO をデフォルトとする
+    local level = notification_level or vim.log.levels.INFO
+    local denied_execution = execute_description or ( "[" .. command_to_execute .. "]" )
+
+    local confirm = vim.fn.confirm(prompt, "&Yes\n&No", 0)
+
+    if confirm == 1 then
+        vim.cmd(command_to_execute)
+    elseif confirm == 2 then
+        vim.notify(denied_execution .. " not executed", level)
+    else
+        vim.notify("command canceled", level)
+    end
+end
+
+map('n', '<leader>zw', function()
+	confirm_and_execute("save all file?", 'wall', "save all files")
+end, { desc = "save all files with confirmation"})
+
+map('n', '<leader>d', function()
+	confirm_and_execute("close this file?", 'quit!', "forced close file")
+end, { desc = "close current file with confirmation"})
+
+map('n', '<leader>zq', function()
+	confirm_and_execute("close all file?", 'qall', "close all files")
+end, { desc = "close all files with confirmation"})
+
+map('n', '<leader>zx', function()
+	confirm_and_execute("save and close all file?", 'xall', "save and close all files")
+end, { desc = "save and close all files with confirmation"})
+
+-- !!! <leader>zzz のための特殊な関数（二段階確認のため）
+local function confirm_and_force_quit()
+    local confirm_save = vim.fn.confirm("CAUTION! close all files WITHOUT save?", "&Yes\n&No", 0)
+    if confirm_save == 1 then
+        local confirm_again = vim.fn.confirm("are you sure to FORCE close?", "&Confirm\n&No", 0)
+        if confirm_again == 1 then
+            vim.cmd('qall!')
+        else
+            vim.notify("FORCE close canceled", vim.log.levels.INFO)
+        end
+    elseif confirm_save == 2 then
+        vim.notify("not closed", vim.log.levels.INFO)
+    else
+        vim.notify("command canceled", vim.log.levels.INFO)
+    end
+end
+
+map('n', '<leader>zzz', confirm_and_force_quit, { desc = "close all files with confirmation, but don't save"})
+
+
 -- ==========================================================================
 -- 6. プラグイン依存のショートカット
 -- ==========================================================================

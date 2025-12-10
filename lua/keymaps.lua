@@ -105,36 +105,35 @@ local function confirm_and_execute(prompt, command_to_execute, execute_descripti
 end
 
 map('n', '<leader>zw', function()
-	confirm_and_execute("save all file?", 'wall', "save-all-files")
+	confirm_and_execute("save all file?", 'wall', "save all files")
 end, { desc = "save all files with confirmation"})
 
 map('n', '<leader>zq', function()
-	confirm_and_execute("close all file?", 'qall', "close-all-files")
+	confirm_and_execute("close all file?", 'qall', "close all files")
 end, { desc = "close all files with confirmation"})
 
 map('n', '<leader>zx', function()
-	confirm_and_execute("save and close all file?", 'xall', "save-and-close-all-files")
+	confirm_and_execute("save and close all file?", 'xall', "save and close all files")
 end, { desc = "save and close all files with confirmation"})
 
-map('n', '<leader>zzz', function()
-	local confirm = vim.fn.confirm("CAUTION! close all files WITHOUT save?", "&Yes\n&No", 0)
-	if confirm == 1 then
-		local confirm_again = vim.fn.confirm("are you sure to FORCE close?", "&Confirm\n&No", 0)
-		if confirm_again == 1 then
-			-- バッファ上のすべてのファイルを保存せず閉じる
-			vim.cmd('qall!')
-		elseif confirm_again == 2 then
-			vim.notify("not closed", vim.log.levels.INFO)
-		else
-			vim.notify("command canceled", vim.log.levels.INFO)
-		end
-	elseif confirm == 2 then
-		vim.notify("not closed", vim.log.levels.INFO)
-	else
-		vim.notify("command canceled", vim.log.levels.INFO)
-	end
-end, { desc = "close all files with confirmation, but don't save"})
+-- !!! <leader>zzz のための特殊な関数（二段階確認のため）
+local function confirm_and_force_quit()
+    local confirm_save = vim.fn.confirm("CAUTION! close all files WITHOUT save?", "&Yes\n&No", 0)
+    if confirm_save == 1 then
+        local confirm_again = vim.fn.confirm("are you sure to FORCE close?", "&Confirm\n&No", 0)
+        if confirm_again == 1 then
+            vim.cmd('qall!')
+        else
+            vim.notify("FORCE close canceled", vim.log.levels.INFO)
+        end
+    elseif confirm_save == 2 then
+        vim.notify("not closed", vim.log.levels.INFO)
+    else
+        vim.notify("command canceled", vim.log.levels.INFO)
+    end
+end
 
+map('n', '<leader>zzz', confirm_and_force_quit, { desc = "close all files with confirmation, but don't save"})
 
 
 -- ==========================================================================

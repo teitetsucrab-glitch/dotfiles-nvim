@@ -84,10 +84,11 @@ map('n', '<leader>n', '<cmd>tabnew<CR>', opts)
 map('t', '<C-]>', '<C-\\><C-n>', opts)
 
 
+-- 後で色々いじる
 map('n', '<leader>zw', function()
 	confirm = vim.fn.confirm("save all file?", "&Yes\n&No", 0)
 	if confirm == 1 then
-		vim.notify("all file saved", vim.log.levels.INFO)
+		vim.cmd('wall')
 	elseif confirm == 2 then
 		vim.notify("not saved", vim.log.levels.INFO)
 	else
